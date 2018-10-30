@@ -1,0 +1,14 @@
+{{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "showMandatarissen")}}
+  beheer mandatarissen
+{{/wu-link-button}}
+{{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "showFracties")}}
+  beheer fracties
+{{/wu-link-button}}
+
+{{#if displayMandatarissen}}
+  {{editor-plugins/fractievorming-mandatarissen-table mandatarissen=mandatarissen fracties=fracties}}
+{{else}}
+  {{editor-plugins/fractievorming-fracties-table fracties=fracties onRemoveFractie=(action "onRemoveFractie")}}
+{{/if}}
+
+{{yield}}

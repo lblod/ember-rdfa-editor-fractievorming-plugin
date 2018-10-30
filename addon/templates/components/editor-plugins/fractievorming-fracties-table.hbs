@@ -1,0 +1,25 @@
+{{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "createFractie")}}
+  nieuwe fractie toevoegen
+{{/wu-link-button}}
+<table class="data-table data-table--lined data-table--zebra data-table--tight">
+  <thead>
+    <tr>
+      <th>Fractienaam</th>
+      <th>Actie</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {{#if createNewFractie}}
+      {{editor-plugins/fractievorming-fracties-table-row creating=true
+        onCreate=(action "onCreateFractie")
+        onCancelCreate=(action "onCancelCreate")
+      }}
+    {{/if}}
+
+    {{#each fracties as |fractie|}}
+      {{editor-plugins/fractievorming-fracties-table-row fractie=fractie onRemove=(action "onRemove")}}
+    {{/each}}
+  </tbody>
+</table>
+{{yield}}

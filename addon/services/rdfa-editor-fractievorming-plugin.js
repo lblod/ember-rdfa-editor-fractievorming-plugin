@@ -36,6 +36,7 @@ const RdfaEditorFractievormingPlugin = Service.extend({
 
     const hints = [];
     contexts.forEach((context) => {
+      this.setBestuursorgaanIfSet(context.context);
       let triple = this.detectRelevantContext(context);
       if(!triple) return;
 
@@ -148,6 +149,16 @@ const RdfaEditorFractievormingPlugin = Service.extend({
       warn(`Trying to work on unattached domNode. Sorry can't handle these...`, {id: 'fractievorming.domNode'});
     }
     return domNode;
+  },
+
+  setBestuursorgaanIfSet(triples) {
+    const zitting = triples.find((triple) => triple.object === 'http://data.vlaanderen.be/ns/besluit#Zitting');
+    if (zitting) {
+      const bestuursorgaan = triples.find((triple) => triple.subject === zitting.subject && triple.predicate === 'http://data.vlaanderen.be/ns/besluit#isGehoudenDoor');
+      if (bestuursorgaan) {
+        this.set('bestuursorgaan', bestuursorgaan.object);
+      }
+    }
   }
 
 });

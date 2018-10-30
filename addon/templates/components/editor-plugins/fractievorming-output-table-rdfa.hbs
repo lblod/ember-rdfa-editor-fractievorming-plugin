@@ -1,0 +1,37 @@
+<table class="data-table data-table--lined data-table--zebra data-table--tight">
+  <thead>
+    <tr>x
+      <th>Fractie</th>
+      <th>Voornaam &amp; Familienaam</th>
+      <th>Mandaat</th>
+    </tr>
+  </thead>
+  <tbody>
+      {{#each mandatarissen as |mandataris|}}
+        <tr>
+          <td>
+            {{#with-rdfa-resource resource=mandataris as |ctx|}}
+              {{#ctx.linked-resource p="heeftLidmaatschap" as |model lidmaatschap|}}
+                {{#lidmaatschap.linked-resource p="binnenFractie" as |model fractie|}}
+                  {{fractie.prop resource=model p="naam"}}
+
+                  <div class="u-hidden">
+                    {{#fractie.linked-resource p="fractietype" as |model fractietype|}}
+                      {{fractietype.prop resource=model p="label"}}
+                    {{/fractie.linked-resource}}
+                  </div>
+
+                {{/lidmaatschap.linked-resource}}
+              {{/ctx.linked-resource}}
+            {{/with-rdfa-resource}}
+          </td>
+          <td>
+            {{mandataris.isBestuurlijkeAliasVan.gebruikteVoornaam}} {{mandataris.isBestuurlijkeAliasVan.achternaam}}
+          </td>
+          <td>
+            {{mandataris.bekleedt.bestuursfunctie.label}}
+          </td>
+        </tr>
+      {{/each}}
+  </tbody>
+</table>

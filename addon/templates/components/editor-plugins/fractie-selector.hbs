@@ -1,0 +1,8 @@
+{{#x-select value=_fractie action=(action "select") as |xs|}}
+  <option>Selecteer een fractie</option>
+  {{#each _fracties as |fractie|}}
+    {{#xs.option value=fractie}}
+      {{fractie.naam}}
+    {{/xs.option}}
+  {{/each}}
+{{/x-select}}

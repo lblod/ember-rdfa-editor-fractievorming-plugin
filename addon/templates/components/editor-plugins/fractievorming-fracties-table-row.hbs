@@ -1,0 +1,36 @@
+<td>
+  {{#if editing}}
+    {{input value=fractie.naam}}
+  {{else if creating}}
+    {{input value=fractie.naam}}
+  {{else}}
+    {{fractie.naam}}
+  {{/if}}
+</td>
+<td>
+  {{#if creating}}
+    {{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "create" fractie)}}
+      opslaan
+    {{/wu-link-button}}
+    {{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "cancelCreate")}}
+      annuleer
+    {{/wu-link-button}}
+  {{else if editing}}
+    {{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "save")}}
+      opslaan
+    {{/wu-link-button}}
+    {{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "cancel")}}
+      annuleer
+    {{/wu-link-button}}
+  {{else}}
+    {{#unless fractie.fractietype.isOnafhankelijk}}
+      {{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "edit")}}
+        editeer
+      {{/wu-link-button}}
+      {{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "remove" fractie)}}
+        verwijder
+      {{/wu-link-button}}
+    {{/unless}}
+  {{/if}}
+</td>
+{{yield}}

@@ -1,0 +1,23 @@
+<table class="data-table data-table--lined data-table--zebra data-table--tight">
+  <thead>
+    <tr>
+      <th>Fractie</th>
+      <th>Voornaam &amp; Familienaam</th>
+      <th>Mandaten</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each personenMandatenLidmaatschap as |pml|}}
+      <tr>
+        <td>{{editor-plugins/fractie-selector fracties=fracties fractie=pml.lidmaatschap.binnenFractie onSelect=(action "changeFractie" pml)}}</td>
+        <td><strong>{{pml.persoon.gebruikteVoornaam}} {{pml.persoon.achternaam}}</strong></td>
+        <td>
+          {{#each pml.mandatarissen as |m|}}
+            {{m.bekleedt.bestuursfunctie.label}}
+          {{/each}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+{{yield}}
