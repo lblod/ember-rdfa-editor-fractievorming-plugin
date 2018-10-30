@@ -22,7 +22,7 @@ export default Component.extend({
   actions: {
     changeFractie(personenMandatenLidmaatschap, fractie){
       let fractieToSet = fractie;
-      if(fractieToSet.fractietype.isOnafhankelijk){
+      if(fractieToSet && fractieToSet.fractietype.isOnafhankelijk){
         fractieToSet = createOnafhankelijkeFractie([ this.bestuursorgaan ]);
       }
       personenMandatenLidmaatschap.mandatarissen.forEach(m => m.heeftLidmaatschap.set('binnenFractie', fractieToSet));
