@@ -16,7 +16,7 @@ export default EmberObject.extend({
 
   init(args) {
     this._super(...arguments);
-    if (args.type == 'Onafhankelijk'){
+    if (args.type == 'Onafhankelijk' || args.uri == 'http://data.vlaanderen.be/id/concept/Fractietype/Onafhankelijk'){
       this.set('uri', 'http://data.vlaanderen.be/id/concept/Fractietype/Onafhankelijk');
       this.set('label', 'Onafhankelijk');
     }
