@@ -26,10 +26,18 @@
             {{/with-rdfa-resource}}
           </td>
           <td>
-            {{mandataris.isBestuurlijkeAliasVan.gebruikteVoornaam}} {{mandataris.isBestuurlijkeAliasVan.achternaam}}
+            {{#with-rdfa-resource resource=mandataris as |ctx|}}
+              {{#ctx.linked-resource p="isBestuurlijkeAliasVan" as |model persoon|}}
+                {{persoon.prop resource=model p="gebruikteVoornaam"}} {{persoon.prop resource=model p="achternaam"}}
+              {{/ctx.linked-resource}}
+            {{/with-rdfa-resource}}
           </td>
           <td>
-            {{mandataris.bekleedt.bestuursfunctie.label}}
+            {{#with-rdfa-resource resource=mandataris as |ctx|}}
+              {{#ctx.linked-resource p="bekleedt" as |model mandaat|}}
+                {{model.bestuursfunctie.label}}
+              {{/ctx.linked-resource}}
+            {{/with-rdfa-resource}}
           </td>
         </tr>
       {{/each}}
