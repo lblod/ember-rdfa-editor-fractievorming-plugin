@@ -5,14 +5,16 @@ export default Component.extend({
   layout,
   didReceiveAttrs(){
     let fractieToSet = this.fractie;
+    //TODO: why?
     if(this.fractie && this.fractie.fractietype.isOnafhankelijk)
       fractieToSet = this.fracties.find(f => f.fractietype.isOnafhankelijk);
-    this.set('_fractie', fractieToSet);
+    this.set('_fractieUri', (fractieToSet || {}).uri);
     this.set('_fracties', this.fracties);
   },
   actions: {
-    select(fractie){
-      this.set('_fractie', fractie);
+    select(fractieUri){
+      let fractie = this.fracties.find(f => f.uri == fractieUri);
+      this.set('_fractieUri', (fractie || {}).uri);
       this.onSelect(fractie);
     }
   }
