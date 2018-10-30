@@ -102,6 +102,7 @@ const RdfaEditorFractievormingPlugin = Service.extend({
         location: hint.location,
         domNodeToUpdate: hint.domNode,
         instructiveUri: hint.instructiveUri,
+        editMode: hint.options.editMode,
         hrId, hintsRegistry, editor
       },
       location: hint.location,
@@ -128,6 +129,7 @@ const RdfaEditorFractievormingPlugin = Service.extend({
     if(instructiveTriple.predicate == this.fractievormingTable){
       location = [ editor.getRichNodeFor(domNode).start, editor.getRichNodeFor(domNode).end ];
       options.noHighlight=true;
+      options.editMode = true;
     }
     hints.push({text, location, domNode, instructiveUri: instructiveTriple.predicate, options});
     return hints;

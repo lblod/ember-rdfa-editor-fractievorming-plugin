@@ -12,16 +12,16 @@
           <td>
             {{#with-rdfa-resource resource=mandataris as |ctx|}}
               {{#ctx.linked-resource p="heeftLidmaatschap" as |model lidmaatschap|}}
-                {{#lidmaatschap.linked-resource p="binnenFractie" as |model fractie|}}
-                  {{fractie.prop resource=model p="naam"}}
-
-                  <div class="u-hidden">
-                    {{#fractie.linked-resource p="fractietype" as |model fractietype|}}
-                      {{fractietype.prop resource=model p="label"}}
-                    {{/fractie.linked-resource}}
-                  </div>
-
-                {{/lidmaatschap.linked-resource}}
+                {{#if model.binnenFractie}}
+                  {{#lidmaatschap.linked-resource p="binnenFractie" as |model fractie|}}
+                    {{fractie.prop resource=model p="naam"}}
+                    <div class="u-hidden">
+                      {{#fractie.linked-resource p="fractietype" as |model fractietype|}}
+                        {{fractietype.prop resource=model p="label"}}
+                      {{/fractie.linked-resource}}
+                    </div>
+                  {{/lidmaatschap.linked-resource}}
+                {{/if}}
               {{/ctx.linked-resource}}
             {{/with-rdfa-resource}}
           </td>
