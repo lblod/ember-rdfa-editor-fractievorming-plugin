@@ -72,6 +72,7 @@ export default Component.extend({
   //TODO:  uri mandataris is NOK!!
   //TODO: bestuursorganenintijd
   //TODO: error on create fractie -> tordfa seria
+  //TODO: start lidmaatschap
   loadData: task(function *(){
     let table = this.getMandatarisTableNode();
     if(!table)
@@ -185,9 +186,13 @@ export default Component.extend({
     this.loadData.perform();
   },
 
+  createWrappingHTML(innerHTML){
+    return `<div property="ext:fractievormingTable">${innerHTML}</div>`;
+  },
+
   actions: {
     insert(){
-      const html = document.getElementById(this.outputId).innerHTML;
+      const html = this.createWrappingHTML(document.getElementById(this.outputId).innerHTML);
       if (this.info.node) {
         this.hintsRegistry.removeHintsAtLocation(this.location, this.hrId, this.info.who);
         this.get('editor').replaceNodeWithHTML(this.info.node, html);

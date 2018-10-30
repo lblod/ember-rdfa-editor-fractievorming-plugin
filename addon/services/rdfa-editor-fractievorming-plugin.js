@@ -15,6 +15,7 @@ import { warn } from '@ember/debug';
  */
 const RdfaEditorFractievormingPlugin = Service.extend({
   insertFractievormingText: 'http://mu.semte.ch/vocabularies/ext/fractievormingText',
+  fractievormingTable: 'http://mu.semte.ch/vocabularies/ext/fractievormingTable',
 
   /**
    * Restartable task to handle the incoming events from the editor dispatcher
@@ -31,11 +32,8 @@ const RdfaEditorFractievormingPlugin = Service.extend({
   execute: task(function * (hrId, contexts, hintsRegistry, editor, extraInfo = []) {
     if (contexts.length === 0) return [];
 
-    if(extraInfo.find(i => i && i.who == this.who))
-      return [];
-
     const hints = [];
-    contexts.forEach((context) => {
+    contexts.forEach((context, index) => {
       this.setBestuursorgaanIfSet(context.context);
       let triple = this.detectRelevantContext(context);
       if(!triple) return;
@@ -44,8 +42,15 @@ const RdfaEditorFractievormingPlugin = Service.extend({
 
       if(!domNode) return;
 
-      hintsRegistry.removeHintsInRegion(context.region, hrId, this.who);
-      hints.pushObjects(this.generateHintsForContext(context, triple, domNode));
+      if(triple.predicate == this.insertFractievormingText){
+        hintsRegistry.removeHintsInRegion(context.region, hrId, this.who);
+        hints.pushObjects(this.generateHintsForContext(context, triple, domNode, editor));
+      }
+      let domNodeRegion = [ editor.getRichNodeFor(domNode).start, editor.getRichNodeFor(domNode).end ];
+      if(triple.predicate == this.fractievormingTable && !hints.find(h => h.location[0] == domNodeRegion[0] && h.location[1] == domNodeRegion[1])){
+        hintsRegistry.removeHintsInRegion(domNodeRegion, hrId, this.who);
+        hints.pushObjects(this.generateHintsForContext(context, triple, domNode, editor));
+      }
     });
 
     const cards = hints.map( (hint) => this.generateCard(hrId, hintsRegistry, editor, hint, this.who));
@@ -67,6 +72,9 @@ const RdfaEditorFractievormingPlugin = Service.extend({
    */
   detectRelevantContext(context){
     if(context.context.slice(-1)[0].predicate == this.insertFractievormingText){
+      return context.context.slice(-1)[0];
+    }
+    if(context.context.slice(-1)[0].predicate == this.fractievormingTable){
       return context.context.slice(-1)[0];
     }
     return null;
@@ -113,10 +121,14 @@ const RdfaEditorFractievormingPlugin = Service.extend({
    *
    * @private
    */
-  generateHintsForContext(context, instructiveTriple, domNode, options = {}){
+  generateHintsForContext(context, instructiveTriple, domNode, editor, options = {}){
     const hints = [];
     const text = context.text;
-    const location = context.region;
+    let location = context.region;
+    if(instructiveTriple.predicate == this.fractievormingTable){
+      location = [ editor.getRichNodeFor(domNode).start, editor.getRichNodeFor(domNode).end ];
+      options.noHighlight=true;
+    }
     hints.push({text, location, domNode, instructiveUri: instructiveTriple.predicate, options});
     return hints;
   },
