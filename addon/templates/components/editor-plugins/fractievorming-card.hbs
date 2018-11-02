@@ -2,7 +2,7 @@
   <div class="grid">
     <div class="col--10-12">
       {{#if loadData.isRunning}}
-        Aan het laden...
+        <p class="loader"><span class="u-visually-hidden">Aan het laden</span></p>
       {{else}}
         {{#if mandatarissen}}
           <p class="u-spacer--tiny">
@@ -19,7 +19,7 @@
 {{#if mandatarissen}}
   <div class="modal-dialog__footer">
     {{#if fetchResources.isRunning}}
-      Aan het laden...
+      <p class="loader"><span class="u-visually-hidden">Aan het laden</span></p>
     {{else}}
       {{#wu-button-group}}
         {{#if bestuursorgaan}}
@@ -49,6 +49,13 @@
      dialog-content-class="modal-dialog__content--sectioned"
      onClose=(action 'togglePopup')
      as |m|}}
+    {{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "resetTable")}}
+      {{#if tableReset.isRunning}}
+        <p class="loader"><span class="u-visually-hidden">Aan het laden</span></p>
+      {{else}}
+        herlaad tabel
+      {{/if}}
+    {{/wu-link-button}}
     {{#m.content isSectioned=true}}
       {{editor-plugins/fractievorming-modal
         fracties=fracties

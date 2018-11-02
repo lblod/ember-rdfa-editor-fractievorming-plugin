@@ -85,6 +85,11 @@ export default Component.extend({
       yield this.loadDataInitialMode();
   }),
 
+  tableReset: task(function *(){
+     yield this.setProperties();
+     yield this.loadDataInitialMode();
+  }),
+  
   async loadDataEditMode(){
     let triples = this.serializeTableToTriples(this.info.domNodeToUpdate);
     let mandatarissen = await this.instantiateMandatarissen(triples);
@@ -258,6 +263,9 @@ export default Component.extend({
   },
 
   actions: {
+    resetTable(){
+      this.tableReset.perform();
+    },
     insert(){
       const html = this.createWrappingHTML(document.getElementById(this.outputId).innerHTML);
       this.hintsRegistry.removeHintsAtLocation(this.location, this.hrId, this.info.who);
