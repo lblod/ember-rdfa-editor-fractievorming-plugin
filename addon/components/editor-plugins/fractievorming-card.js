@@ -125,7 +125,7 @@ export default Component.extend({
     let fractie = fracties.find(f =>  f.naam == lijstnaam);
     let lidmaatschap = LidmaatschapToCreate.create({
       binnenFractie: fractie || initOnafhankelijkeFractieToCreate(this.bestuurseenheid, [this.bestuursorgaan]),
-      lidGedurende: TijdsintervalToCreate.create({begin: '2016-07-12T09:30:46.349Z' ||new Date().toISOString() })
+      lidGedurende: TijdsintervalToCreate.create({begin: new Date().toISOString() }) //TODO: make autopropsal
     });
 
     mandataris.set('heeftLidmaatschap', lidmaatschap);
