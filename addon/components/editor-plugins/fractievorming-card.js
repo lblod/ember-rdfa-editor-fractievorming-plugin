@@ -7,6 +7,7 @@ import FractieToCreate from '../../models/fractie-to-create';
 import FractietypeToCreate from '../../models/fractietype-to-create';
 import initOnafhankelijkeFractieToCreate from '../../utils/init-onafhankelijke-fractie-to-create';
 import LidmaatschapToCreate from '../../models/lidmaatschap-to-create';
+import TijdsintervalToCreate from '../../models/tijdsinterval-to-create';
 import RdfaContextScanner from '@lblod/ember-rdfa-editor/utils/rdfa-context-scanner';
 import { task } from 'ember-concurrency';
 import { A } from '@ember/array';
@@ -127,7 +128,10 @@ export default Component.extend({
 
     let lijstnaam = await mandataris.isBestuurlijkeAliasVan.isKandidaatVoor.firstObject.lijstnaam;
     let fractie = fracties.find(f =>  f.naam == lijstnaam);
-    let lidmaatschap = LidmaatschapToCreate.create({binnenFractie: fractie || initOnafhankelijkeFractieToCreate(this.bestuurseenheid, [this.bestuursorgaan])});
+    let lidmaatschap = LidmaatschapToCreate.create({
+      binnenFractie: fractie || initOnafhankelijkeFractieToCreate(this.bestuurseenheid, [this.bestuursorgaan]),
+      lidGedurende: TijdsintervalToCreate.create({begin: '2016-07-12T09:30:46.349Z' ||new Date().toISOString() })
+    });
 
     mandataris.set('heeftLidmaatschap', lidmaatschap);
 

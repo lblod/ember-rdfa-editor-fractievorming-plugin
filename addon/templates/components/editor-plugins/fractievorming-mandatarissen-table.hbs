@@ -2,21 +2,19 @@
   <thead>
     <tr>
       <th>Fractie</th>
+      <th>Lid vanaf</th>
       <th>Voornaam &amp; Familienaam</th>
       <th>Mandaten</th>
     </tr>
   </thead>
   <tbody>
-    {{#each personenMandatenLidmaatschap as |pml|}}
-      <tr>
-        <td>{{editor-plugins/fractie-selector fracties=fracties fractie=pml.lidmaatschap.binnenFractie onSelect=(action "changeFractie" pml)}}</td>
-        <td><strong>{{pml.persoon.gebruikteVoornaam}} {{pml.persoon.achternaam}}</strong></td>
-        <td>
-          {{#each pml.mandatarissen as |m|}}
-            {{m.bekleedt.bestuursfunctie.label}}
-          {{/each}}
-        </td>
-      </tr>
+    {{#each mandatarissen as |mandataris|}}
+      {{editor-plugins/fractievorming-mandatarissen-table-row
+        mandataris=mandataris
+        fracties=fracties
+        bestuurseenheid=bestuurseenheid
+        bestuursorgaan=bestuursorgaan
+      }}
     {{/each}}
   </tbody>
 </table>

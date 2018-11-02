@@ -6,7 +6,12 @@
 {{/wu-link-button}}
 
 {{#if displayMandatarissen}}
-  {{editor-plugins/fractievorming-mandatarissen-table mandatarissen=mandatarissen fracties=fracties}}
+  {{editor-plugins/fractievorming-mandatarissen-table
+    mandatarissen=mandatarissen
+    fracties=fracties
+    bestuursorgaan=bestuursorgaan
+    bestuurseenheid=bestuurseenheid
+  }}
 {{else}}
   {{editor-plugins/fractievorming-fracties-table
     fracties=fracties
