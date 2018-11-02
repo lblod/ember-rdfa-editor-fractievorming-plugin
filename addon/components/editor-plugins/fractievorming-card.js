@@ -77,11 +77,6 @@ export default Component.extend({
     this.set('bestuursorgaan', bestuursorgaan);
   },
 
-
-  //TODO: load only when clicking
-  //TODO: lid gedurende
-  //TODO:  uri mandataris is NOK!!
-  //TODO: start lidmaatschap
   loadData: task(function *(){
     yield this.setProperties();
     if(this.info.editMode)

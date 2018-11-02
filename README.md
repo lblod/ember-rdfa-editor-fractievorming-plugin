@@ -1,7 +1,7 @@
-ember-rdfa-editor-fractievorming-plugin
+@lblod/ember-rdfa-editor-fractievorming-plugin
 ==============================================================================
 
-[Short description of the addon.]
+Plugin responsible for managing fracties during installation
 
 Installation
 ------------------------------------------------------------------------------
@@ -13,9 +13,11 @@ ember install ember-rdfa-editor-fractievorming-plugin
 
 Usage
 ------------------------------------------------------------------------------
-
-[Longer description of how to use the addon in apps.]
-
+Add
+```
+<span property="ext:fractievormingText">voeg lijst met fracties toe.</span>
+```
+A card will show up. When save RDFA output in document.
 
 Contributing
 ------------------------------------------------------------------------------
