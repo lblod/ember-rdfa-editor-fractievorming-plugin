@@ -13,7 +13,9 @@ export default Component.extend({
         fractieToSet = initOnafhankelijkeFractieToCreate(this.bestuurseenheid, [ this.bestuursorgaan ]);
       }
       this.mandataris.heeftLidmaatschap.set('binnenFractie', fractieToSet);
+    },
+    remove(){
+      this.onRemove(this.mandataris);
     }
-
   }
 });
