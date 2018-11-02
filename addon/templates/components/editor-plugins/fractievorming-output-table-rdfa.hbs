@@ -27,11 +27,13 @@
                     </div>
                   {{/lidmaatschap.linked-resource}}
                 {{/if}}
-                {{#if model.lidGedurende}}
-                  {{#lidmaatschap.linked-resource p="lidGedurende" as |model tijdsinterval|}}
-                    <span property={{model.rdfaBindings.begin}} datatype="xsd:dateTime" content={{model.begin}}>{{model.begin}}</span>
-                  {{/lidmaatschap.linked-resource}}
-                {{/if}}
+                <div class="u-hidden">
+                  {{#if model.lidGedurende}}
+                    {{#lidmaatschap.linked-resource p="lidGedurende" as |model tijdsinterval|}}
+                      <span property={{model.rdfaBindings.begin}} datatype="xsd:dateTime" content={{model.begin}}>{{model.begin}}</span>
+                    {{/lidmaatschap.linked-resource}}
+                  {{/if}}
+                </div>
               {{/ctx.linked-resource}}
             {{/with-rdfa-resource}}
           </td>

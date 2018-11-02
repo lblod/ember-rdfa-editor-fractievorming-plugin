@@ -164,6 +164,19 @@ export default Component.extend({
           fractie.set('fractietype', fractietype);
         }
       }
+
+      const lidGedurendeUri = (triples.find((t) => t.predicate === lidmaatschap.rdfaBindings.lidGedurende
+                                            && t.subject == lidmaatschapUri) || {}).object;
+      if(lidGedurendeUri){
+        let tijdsInterval = TijdsintervalToCreate.create({uri: lidGedurendeUri});
+
+        const beginValue = (triples.find((t) => t.predicate === tijdsInterval.rdfaBindings.begin
+                                         && t.subject == lidGedurendeUri) || {}).object;
+        tijdsInterval.set('begin', beginValue);
+
+        lidmaatschap.set('lidGedurende', tijdsInterval);
+      }
+
     }
   },
 
