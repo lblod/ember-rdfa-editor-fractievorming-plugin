@@ -2,6 +2,7 @@
   <thead>
     <tr>
       <th>Fractie</th>
+      <th>Lid vanaf</th>
       <th>Voornaam &amp; Familienaam</th>
       <th>Mandaat</th>
     </tr>
@@ -27,15 +28,21 @@
                     </div>
                   {{/lidmaatschap.linked-resource}}
                 {{/if}}
-                <div class="u-hidden">
-                  {{#if model.lidGedurende}}
-                    {{#lidmaatschap.linked-resource p="lidGedurende" as |model tijdsinterval|}}
-                      <span property={{model.rdfaBindings.begin}} datatype="xsd:dateTime" content={{model.begin}}>{{model.begin}}</span>
-                    {{/lidmaatschap.linked-resource}}
-                  {{/if}}
-                </div>
               {{/ctx.linked-resource}}
             {{/with-rdfa-resource}}
+          </td>
+          <td>
+            {{#with-rdfa-resource resource=mandataris as |ctx|}}
+              {{#ctx.linked-resource p="heeftLidmaatschap" as |model lidmaatschap|}}
+                {{#if model.lidGedurende}}
+                  {{#lidmaatschap.linked-resource p="lidGedurende" as |model tijdsinterval|}}
+                    <span property={{model.rdfaBindings.begin}} datatype="xsd:dateTime" content={{model.begin}}>
+                      {{moment-format model.begin 'LL, LT'}}
+                    </span>
+                  {{/lidmaatschap.linked-resource}}
+                {{/if}}
+              {{/ctx.linked-resource}}
+           {{/with-rdfa-resource}}
           </td>
           <td>
             {{#with-rdfa-resource resource=mandataris as |ctx|}}
