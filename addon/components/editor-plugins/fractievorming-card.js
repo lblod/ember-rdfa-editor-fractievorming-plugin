@@ -151,9 +151,6 @@ export default Component.extend({
         });
         fractie.set('naam', (triples.find((t) => t.predicate === fractie.rdfaBindings.naam && t.subject == fractie.uri) || {}).object);
 
-        if(!(triples.find((t) => t.predicate === fractie.rdfaBindings.naam && t.subject == fractie.uri) || {}).object)
-          debugger;
-
         lidmaatschap.set('binnenFractie', fractie);
         const fractieTypeUri = triples.find((t) => t.predicate === fractie.rdfaBindings.fractietype && t.subject == fractie.uri).object;
         if(fractieTypeUri){
@@ -198,12 +195,6 @@ export default Component.extend({
   },
 
   async buildMandatarisFromTriples(triples) {
-    function setPropIfTripleFound(triples, obj, prop) {
-      const triple = triples.find((t) => t.predicate === obj.rdfaBindings[prop]);
-      if (triple) {
-        obj.set(prop, triple.object.trim());
-      }
-    }
     const mandataris = MandatarisToCreate.create({ uri: triples[0].subject});
     const mandaatURI = triples.find((t) => t.predicate === mandataris.rdfaBindings.bekleedt);
     if (mandaatURI) {
@@ -255,7 +246,6 @@ export default Component.extend({
   actions: {
     insert(){
       const html = this.createWrappingHTML(document.getElementById(this.outputId).innerHTML);
-      let mappedLocation = this.hintsRegistry.updateLocationToCurrentIndex(this.hrId, this.location);
       this.hintsRegistry.removeHintsAtLocation(this.location, this.hrId, this.info.who);
       this.get('editor').replaceNodeWithHTML(this.info.domNodeToUpdate, html);
     },

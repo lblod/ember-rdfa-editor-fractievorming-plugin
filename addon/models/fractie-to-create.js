@@ -8,7 +8,7 @@ export default EmberObject.extend({
   bestuursorganenInTijd: null,
   bestuurseenheid: null,
 
-  rdfaBindings: {
+  rdfaBindings: { // eslint-disable-line ember/avoid-leaking-state-in-ember-objects
     class: 'http://data.vlaanderen.be/ns/mandaat#Fractie',
     naam: 'http://www.w3.org/ns/regorg#legalName',
     fractietype: 'http://mu.semte.ch/vocabularies/ext/isFractietype',

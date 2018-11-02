@@ -1,6 +1,5 @@
-import { getOwner } from '@ember/application';
 import Service from '@ember/service';
-import EmberObject, { computed } from '@ember/object';
+import EmberObject  from '@ember/object';
 import { task } from 'ember-concurrency';
 import { isArray } from '@ember/array';
 import { warn } from '@ember/debug';
@@ -29,7 +28,7 @@ const RdfaEditorFractievormingPlugin = Service.extend({
    *
    * @public
    */
-  execute: task(function * (hrId, contexts, hintsRegistry, editor, extraInfo = []) {
+  execute: task(function * (hrId, contexts, hintsRegistry, editor) {
     if (contexts.length === 0) return [];
 
     const hints = [];
@@ -51,8 +50,8 @@ const RdfaEditorFractievormingPlugin = Service.extend({
         hintsRegistry.removeHintsInRegion(domNodeRegion, hrId, this.who);
         hints.pushObjects(this.generateHintsForContext(context, triple, domNode, editor));
       }
-    };
-
+    }
+    
     const cards = hints.map( (hint) => this.generateCard(hrId, hintsRegistry, editor, hint, this.who));
     if(cards.length > 0){
       hintsRegistry.addHints(hrId, this.who, cards);

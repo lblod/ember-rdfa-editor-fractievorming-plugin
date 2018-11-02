@@ -7,7 +7,7 @@ export default Component.extend({
   layout,
 
   actions: {
-    createFractie(fractie){
+    createFractie(){
       this.set('fractieToCreate', FractieToCreate.create({
         bestuurseenheid: this.bestuurseenheid,
         bestuursorganenInTijd: [ this.bestuursorgaan ],
@@ -16,12 +16,12 @@ export default Component.extend({
       this.set('createNewFractie', true);
     },
 
-    onCancelCreate(fractie){
+    onCancelCreate(){
+      this.set('fractieToCreate', null);
       this.set('createNewFractie', false);
     },
 
     onCreateFractie(fractie){
-      //TODO: add bestuursorgaan
       this.fracties.pushObject(fractie);
       this.set('createNewFractie', false);
     },

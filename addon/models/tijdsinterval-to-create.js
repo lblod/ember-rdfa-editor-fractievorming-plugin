@@ -1,3 +1,4 @@
+import uuid from 'uuid/v4';
 import EmberObject from '@ember/object';
 
 export default EmberObject.extend({
