@@ -147,7 +147,9 @@ export default Component.extend({
                                        && t.subject == lidmaatschapUri) || {}).object;
       if(fractieUri){
         const fractie = FractieToCreate.create({
-          uri: fractieUri
+          uri: fractieUri,
+          bestuurseenheid: this.bestuurseenheid,
+          bestuursorganenInTijd: [ this.bestuursorgaan ]
         });
         fractie.set('naam', (triples.find((t) => t.predicate === fractie.rdfaBindings.naam && t.subject == fractie.uri) || {}).object);
 
