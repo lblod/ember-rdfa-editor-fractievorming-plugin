@@ -2,11 +2,11 @@ import { computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from '../../templates/components/editor-plugins/fractievorming-card';
-import Mandataris from '../../models/mandataris';
-import Fractie from '../../models/fractie';
-import Fractietype from '../../models/fractietype';
-import createOnafhankelijkeFractie from '../../utils/create-onafhankelijke-fractie';
-import Lidmaatschap from '../../models/lidmaatschap';
+import MandatarisToCreate from '../../models/mandataris-to-create';
+import FractieToCreate from '../../models/fractie-to-create';
+import FractietypeToCreate from '../../models/fractietype-to-create';
+import initOnafhankelijkeFractieToCreate from '../../utils/init-onafhankelijke-fractie-to-create';
+import LidmaatschapToCreate from '../../models/lidmaatschap-to-create';
 import RdfaContextScanner from '@lblod/ember-rdfa-editor/utils/rdfa-context-scanner';
 import { task } from 'ember-concurrency';
 import { A } from '@ember/array';
@@ -62,18 +62,27 @@ export default Component.extend({
   */
   hintsRegistry: reads('info.hintsRegistry'),
 
-  bestuursorgaan: reads('rdfaEditorFractievormingPlugin.bestuursorgaan'),
+  bestuursorgaanUri: reads('rdfaEditorFractievormingPlugin.bestuursorgaanUri'),
+
+  async setProperties() {
+    let bestuurseenheid = ( await this.store.query('bestuurseenheid',
+                                           { 'filter[bestuursorganen][heeft-tijdsspecialisaties][:uri:]': this.bestuursorgaanUri }
+                                                 )).firstObject;
+    this.set('bestuurseenheid', bestuurseenheid);
+
+    let bestuursorgaan = (await this.store.query('bestuursorgaan',
+                                                  { 'filter[:uri:]': this.bestuursorgaanUri }
+                                                )).firstObject;
+    this.set('bestuursorgaan', bestuursorgaan);
+  },
+
 
   //TODO: load only when clicking
-  //TODO: pass bestuursorgaan to components
-  //TODO: fetch bestuurseenheid
-  //TODO: edit mode
   //TODO: lid gedurende
   //TODO:  uri mandataris is NOK!!
-  //TODO: bestuursorganenintijd
-  //TODO: error on create fractie -> tordfa seria
   //TODO: start lidmaatschap
   loadData: task(function *(){
+    yield this.setProperties();
     if(this.info.editMode)
       yield this.loadDataEditMode();
     else
@@ -91,7 +100,7 @@ export default Component.extend({
       return fracties;
     }, []);
     this.set('mandatarissen', mandatarissen);
-    this.set('fracties', A([...fracties, createOnafhankelijkeFractie()]));
+    this.set('fracties', A([...fracties, initOnafhankelijkeFractieToCreate()]));
   },
 
   async loadDataInitialMode(){
@@ -118,7 +127,7 @@ export default Component.extend({
 
     let lijstnaam = await mandataris.isBestuurlijkeAliasVan.isKandidaatVoor.firstObject.lijstnaam;
     let fractie = fracties.find(f =>  f.naam == lijstnaam);
-    let lidmaatschap = Lidmaatschap.create({binnenFractie: fractie || createOnafhankelijkeFractie([this.bestuursorgaan])});
+    let lidmaatschap = LidmaatschapToCreate.create({binnenFractie: fractie || initOnafhankelijkeFractieToCreate([this.bestuursorgaan])});
 
     mandataris.set('heeftLidmaatschap', lidmaatschap);
 
@@ -128,7 +137,7 @@ export default Component.extend({
   linkMandatarisFractie(triples, mandataris){
     const lidmaatschapUri = (triples.find((t) => t.predicate === mandataris.rdfaBindings.heeftLidmaatschap && t.subject == mandataris.uri) || {}).object;
     if(lidmaatschapUri){
-      const lidmaatschap = Lidmaatschap.create({
+      const lidmaatschap = LidmaatschapToCreate.create({
         uri: lidmaatschapUri
       });
 
@@ -137,7 +146,7 @@ export default Component.extend({
       const fractieUri = (triples.find((t) => t.predicate === lidmaatschap.rdfaBindings.binnenFractie
                                        && t.subject == lidmaatschapUri) || {}).object;
       if(fractieUri){
-        const fractie = Fractie.create({
+        const fractie = FractieToCreate.create({
           uri: fractieUri
         });
         fractie.set('naam', (triples.find((t) => t.predicate === fractie.rdfaBindings.naam && t.subject == fractie.uri) || {}).object);
@@ -148,7 +157,7 @@ export default Component.extend({
         lidmaatschap.set('binnenFractie', fractie);
         const fractieTypeUri = triples.find((t) => t.predicate === fractie.rdfaBindings.fractietype && t.subject == fractie.uri).object;
         if(fractieTypeUri){
-          let fractietype = Fractietype.create({uri: fractieTypeUri});
+          let fractietype = FractietypeToCreate.create({uri: fractieTypeUri});
           fractie.set('fractietype', fractietype);
         }
       }
@@ -157,18 +166,23 @@ export default Component.extend({
 
   async createFractiesProposals(mandatarissen){
     let fracties = A();
+
+    //take the new ones (based on list)
     for(let mandataris of mandatarissen){
       let lijstNaam = await mandataris.isBestuurlijkeAliasVan.isKandidaatVoor.firstObject.lijstnaam;
       if(!fracties.find(f => f.naam == lijstNaam)){
-        let fractie = Fractie.create({naam: lijstNaam,
-                                      bestuursorganenInTijd: [ this.bestuursorgaan ],
-                                      fractietype: Fractietype.create({})});
+        let fractie = FractieToCreate.create({
+          naam: lijstNaam,
+          bestuurseenheid: this.bestuurseenheid,
+          bestuursorganenInTijd: [ this.bestuursorgaan ],
+          fractietype: FractietypeToCreate.create({})
+        });
         fracties.pushObject(fractie);
       }
     }
 
     //needs onafhankelijke
-    fracties.pushObject(createOnafhankelijkeFractie([ this.bestuursorgaan ]));
+    fracties.pushObject(initOnafhankelijkeFractieToCreate([ this.bestuursorgaan ]));
     return fracties;
   },
 
@@ -190,7 +204,7 @@ export default Component.extend({
         obj.set(prop, triple.object.trim());
       }
     }
-    const mandataris = Mandataris.create({ uri: triples[0].subject});
+    const mandataris = MandatarisToCreate.create({ uri: triples[0].subject});
     const mandaatURI = triples.find((t) => t.predicate === mandataris.rdfaBindings.bekleedt);
     if (mandaatURI) {
       const mandaat = await this.store.query('mandaat', { filter:{':uri:': mandaatURI.object}});
@@ -202,7 +216,7 @@ export default Component.extend({
                                              {
                                                filter: {
                                                  ':uri:': persoonURI.object,
-                                                 'is-kandidaat-voor': { 'rechtstreekse-verkiezing': {'stelt-samen': {':uri:': this.bestuursorgaan}}}
+                                                 'is-kandidaat-voor': { 'rechtstreekse-verkiezing': {'stelt-samen': {':uri:': this.bestuursorgaan.uri}}}
                                                },
                                                include: 'is-kandidaat-voor'
                                              });
@@ -230,7 +244,8 @@ export default Component.extend({
 
   didReceiveAttrs() {
     this._super(...arguments);
-    this.loadData.perform();
+    if(this.bestuursorgaanUri)
+      this.loadData.perform();
   },
 
   createWrappingHTML(innerHTML){

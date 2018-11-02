@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import layout from '../../templates/components/editor-plugins/fractievorming-mandatarissen-table';
-import createOnafhankelijkeFractie from '../../utils/create-onafhankelijke-fractie';
+import initOnafhankelijkeFractieToCreate from '../../utils/init-onafhankelijke-fractie-to-create';
 import { computed } from '@ember/object';
 
 export default Component.extend({
@@ -23,7 +23,7 @@ export default Component.extend({
     changeFractie(personenMandatenLidmaatschap, fractie){
       let fractieToSet = fractie;
       if(fractieToSet && fractieToSet.fractietype.isOnafhankelijk){
-        fractieToSet = createOnafhankelijkeFractie([ this.bestuursorgaan ]);
+        fractieToSet = initOnafhankelijkeFractieToCreate([ this.bestuursorgaan ]);
       }
       personenMandatenLidmaatschap.mandatarissen.forEach(m => m.heeftLidmaatschap.set('binnenFractie', fractieToSet));
     }

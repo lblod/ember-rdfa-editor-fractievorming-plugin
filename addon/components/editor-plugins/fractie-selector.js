@@ -5,7 +5,7 @@ export default Component.extend({
   layout,
   didReceiveAttrs(){
     let fractieToSet = this.fractie;
-    //TODO: why?
+    //we only refer to one onafhankelijke fractie in list (even if it spans multiple)
     if(this.fractie && this.fractie.fractietype.isOnafhankelijk)
       fractieToSet = this.fracties.find(f => f.fractietype.isOnafhankelijk);
     this.set('_fractieUri', (fractieToSet || {}).uri);
