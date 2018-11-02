@@ -1,19 +1,9 @@
 import Component from '@ember/component';
 import layout from '../../templates/components/editor-plugins/fractievorming-fracties-table-row';
-import Fractie from '../../models/fractie';
-import Fractietype from '../../models/fractietype';
-import createOnafhankelijkeFractie from '../../utils/create-onafhankelijke-fractie';
 
 export default Component.extend({
   layout,
   tagName: 'tr',
-
-   didReceiveAttrs() {
-     this._super(...arguments);
-     if(this.creating){
-       this.set('fractie',  Fractie.create({}));
-     }
-   },
 
   actions: {
     create(fractie){

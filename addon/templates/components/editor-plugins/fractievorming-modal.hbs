@@ -8,7 +8,12 @@
 {{#if displayMandatarissen}}
   {{editor-plugins/fractievorming-mandatarissen-table mandatarissen=mandatarissen fracties=fracties}}
 {{else}}
-  {{editor-plugins/fractievorming-fracties-table fracties=fracties onRemoveFractie=(action "onRemoveFractie")}}
+  {{editor-plugins/fractievorming-fracties-table
+    fracties=fracties
+    onRemoveFractie=(action "onRemoveFractie")
+    bestuursorgaan=bestuursorgaan
+    bestuurseenheid=bestuurseenheid
+  }}
 {{/if}}
 
 {{yield}}

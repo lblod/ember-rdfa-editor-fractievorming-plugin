@@ -50,7 +50,12 @@
      onClose=(action 'togglePopup')
      as |m|}}
     {{#m.content isSectioned=true}}
-      {{editor-plugins/fractievorming-modal fracties=fracties mandatarissen=mandatarissen}}
+      {{editor-plugins/fractievorming-modal
+        fracties=fracties
+        mandatarissen=mandatarissen
+        bestuursorgaan=bestuursorgaan
+        bestuurseenheid=bestuurseenheid
+      }}
       {{editor-plugins/fractievorming-output-table-rdfa id=outputId class="u-hidden" mandatarissen=mandatarissen}}
     {{/m.content}}
     <div class="modal-dialog__footer">

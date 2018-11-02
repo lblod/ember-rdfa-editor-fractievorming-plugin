@@ -19,6 +19,11 @@
                       {{#fractie.linked-resource p="fractietype" as |model fractietype|}}
                         {{fractietype.prop resource=model p="label"}}
                       {{/fractie.linked-resource}}
+                      {{#fractie.linked-resource p="bestuurseenheid" as |model bestuurseenheid|}}
+                        {{bestuurseenheid.prop resource=model p="naam"}}
+                      {{/fractie.linked-resource}}
+                      {{#fractie.each-resource p="bestuursorganenInTijd" as |account bit|}}
+                      {{/fractie.each-resource}}
                     </div>
                   {{/lidmaatschap.linked-resource}}
                 {{/if}}
