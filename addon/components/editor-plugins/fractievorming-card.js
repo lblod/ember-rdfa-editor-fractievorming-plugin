@@ -95,12 +95,12 @@ export default Component.extend({
     mandatarissen.map(m => this.linkMandatarisFractie(triples, m));
     let fracties = mandatarissen.reduce((fracties, m) => {
       let fractie = m.heeftLidmaatschap && m.heeftLidmaatschap.binnenFractie;
-      if(fractie && !fracties.find(f => f.uri == fractie.uri))
+      if(fractie && !fracties.find(f => f.uri == fractie.uri) && !fractie.fractietype.isOnafhankelijk)
         fracties.push(fractie);
       return fracties;
     }, []);
     this.set('mandatarissen', mandatarissen);
-    this.set('fracties', A([...fracties, initOnafhankelijkeFractieToCreate()]));
+    this.set('fracties', A([...fracties, initOnafhankelijkeFractieToCreate(this.bestuurseenheid, [this.bestuursorgaan])]));
   },
 
   async loadDataInitialMode(){
@@ -127,7 +127,7 @@ export default Component.extend({
 
     let lijstnaam = await mandataris.isBestuurlijkeAliasVan.isKandidaatVoor.firstObject.lijstnaam;
     let fractie = fracties.find(f =>  f.naam == lijstnaam);
-    let lidmaatschap = LidmaatschapToCreate.create({binnenFractie: fractie || initOnafhankelijkeFractieToCreate([this.bestuursorgaan])});
+    let lidmaatschap = LidmaatschapToCreate.create({binnenFractie: fractie || initOnafhankelijkeFractieToCreate(this.bestuurseenheid, [this.bestuursorgaan])});
 
     mandataris.set('heeftLidmaatschap', lidmaatschap);
 
@@ -181,7 +181,7 @@ export default Component.extend({
     }
 
     //needs onafhankelijke
-    fracties.pushObject(initOnafhankelijkeFractieToCreate([ this.bestuursorgaan ]));
+    fracties.pushObject(initOnafhankelijkeFractieToCreate(this.bestuurseenheid, [ this.bestuursorgaan ]));
     return fracties;
   },
 
