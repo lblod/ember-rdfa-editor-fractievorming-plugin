@@ -33,14 +33,14 @@ const RdfaEditorFractievormingPlugin = Service.extend({
     if (contexts.length === 0) return [];
 
     const hints = [];
-    contexts.forEach((context, index) => {
+    for(let context of contexts){
       this.setBestuursorgaanIfSet(context.context);
       let triple = this.detectRelevantContext(context);
-      if(!triple) return;
+      if(!triple) continue;
 
       let domNode = this.findDomNodeForContext(editor, context, this.domNodeMatchesRdfaInstructive(triple));
 
-      if(!domNode) return;
+      if(!domNode) continue;
 
       if(triple.predicate == this.insertFractievormingText){
         hintsRegistry.removeHintsInRegion(context.region, hrId, this.who);
@@ -51,7 +51,7 @@ const RdfaEditorFractievormingPlugin = Service.extend({
         hintsRegistry.removeHintsInRegion(domNodeRegion, hrId, this.who);
         hints.pushObjects(this.generateHintsForContext(context, triple, domNode, editor));
       }
-    });
+    };
 
     const cards = hints.map( (hint) => this.generateCard(hrId, hintsRegistry, editor, hint, this.who));
     if(cards.length > 0){
@@ -169,12 +169,11 @@ const RdfaEditorFractievormingPlugin = Service.extend({
     const zitting = triples.find((triple) => triple.object === 'http://data.vlaanderen.be/ns/besluit#Zitting');
     if (zitting) {
       const bestuursorgaan = triples.find((triple) => triple.subject === zitting.subject && triple.predicate === 'http://data.vlaanderen.be/ns/besluit#isGehoudenDoor');
-      if (bestuursorgaan) {
-        this.set('bestuursorgaan', bestuursorgaan.object);
+      if (bestuursorgaan){
+        this.set('bestuursorgaanUri', bestuursorgaan.object);
       }
     }
   }
-
 });
 
 RdfaEditorFractievormingPlugin.reopen({
