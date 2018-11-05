@@ -4,7 +4,7 @@ import moment from 'moment';
 import { computed } from '@ember/object';
 
 export default Component.extend({
-  tagName: 'td',
+  tagName: 'div',
   layout,
   hours: computed('datetimeStr', {
     get(){
