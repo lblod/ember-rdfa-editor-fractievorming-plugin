@@ -1,10 +1,10 @@
 <table class="data-table data-table--lined data-table--zebra data-table--tight">
   <thead>
     <tr>
-      <th>Fractie</th>
-      <th>Lid vanaf</th>
       <th>Voornaam &amp; Familienaam</th>
       <th>Mandaat</th>
+      <th>Lid vanaf</th>
+      <th>Fractie</th>
     </tr>
   </thead>
   <tbody>
@@ -12,22 +12,15 @@
         <tr>
           <td>
             {{#with-rdfa-resource resource=mandataris as |ctx|}}
-              {{#ctx.linked-resource p="heeftLidmaatschap" as |model lidmaatschap|}}
-                {{#if model.binnenFractie}}
-                  {{#lidmaatschap.linked-resource p="binnenFractie" as |model fractie|}}
-                    {{fractie.prop resource=model p="naam"}}
-                    <div class="u-hidden">
-                      {{#fractie.linked-resource p="fractietype" as |model fractietype|}}
-                        {{fractietype.prop resource=model p="label"}}
-                      {{/fractie.linked-resource}}
-                      {{#fractie.linked-resource p="bestuurseenheid" as |model bestuurseenheid|}}
-                        {{bestuurseenheid.prop resource=model p="naam"}}
-                      {{/fractie.linked-resource}}
-                      {{#fractie.each-resource p="bestuursorganenInTijd" as |account bit|}}
-                      {{/fractie.each-resource}}
-                    </div>
-                  {{/lidmaatschap.linked-resource}}
-                {{/if}}
+              {{#ctx.linked-resource p="isBestuurlijkeAliasVan" as |model persoon|}}
+                {{persoon.prop resource=model p="gebruikteVoornaam"}} {{persoon.prop resource=model p="achternaam"}}
+              {{/ctx.linked-resource}}
+            {{/with-rdfa-resource}}
+          </td>
+          <td>
+            {{#with-rdfa-resource resource=mandataris as |ctx|}}
+              {{#ctx.linked-resource p="bekleedt" as |model mandaat|}}
+                {{model.bestuursfunctie.label}}
               {{/ctx.linked-resource}}
             {{/with-rdfa-resource}}
           </td>
@@ -46,15 +39,22 @@
           </td>
           <td>
             {{#with-rdfa-resource resource=mandataris as |ctx|}}
-              {{#ctx.linked-resource p="isBestuurlijkeAliasVan" as |model persoon|}}
-                {{persoon.prop resource=model p="gebruikteVoornaam"}} {{persoon.prop resource=model p="achternaam"}}
-              {{/ctx.linked-resource}}
-            {{/with-rdfa-resource}}
-          </td>
-          <td>
-            {{#with-rdfa-resource resource=mandataris as |ctx|}}
-              {{#ctx.linked-resource p="bekleedt" as |model mandaat|}}
-                {{model.bestuursfunctie.label}}
+              {{#ctx.linked-resource p="heeftLidmaatschap" as |model lidmaatschap|}}
+                {{#if model.binnenFractie}}
+                  {{#lidmaatschap.linked-resource p="binnenFractie" as |model fractie|}}
+                    {{fractie.prop resource=model p="naam"}}
+                    <div class="u-hidden">
+                      {{#fractie.linked-resource p="fractietype" as |model fractietype|}}
+                        {{fractietype.prop resource=model p="label"}}
+                      {{/fractie.linked-resource}}
+                      {{#fractie.linked-resource p="bestuurseenheid" as |model bestuurseenheid|}}
+                        {{bestuurseenheid.prop resource=model p="naam"}}
+                      {{/fractie.linked-resource}}
+                      {{#fractie.each-resource p="bestuursorganenInTijd" as |account bit|}}
+                      {{/fractie.each-resource}}
+                    </div>
+                  {{/lidmaatschap.linked-resource}}
+                {{/if}}
               {{/ctx.linked-resource}}
             {{/with-rdfa-resource}}
           </td>

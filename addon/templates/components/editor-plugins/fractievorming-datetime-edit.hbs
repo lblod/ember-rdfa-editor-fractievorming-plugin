@@ -1,23 +1,26 @@
-{{wu-datepicker
-  placeholder=datetimePlaceholder
-  class="date-range__datepicker datepicker"
-  value=(mut date)
-  dateFormat=dateFormat
-}}
-<div class="double-input js-double-input">
-  <div class="double-input__inputs">
-    <div class="double-input__input">
-      <label>
-        Uur
-        {{input class="input-field input-field--block" placeholder="12"  data-double-input-label-highlight="1"  type="number" value=hours min=0 max=12}}
-      </label>
-    </div>
-    <div class="double-input__input">
-      <label>
-        Minuten
-        {{input class="input-field input-field--block" placeholder="00"  data-double-input-label-highlight="2"  type="number" value=minutes min=0 max=59}}
-      </label>
-    </div>
+<div class="grid grid--collapse">
+  <div class="col--7-12">
+    <label class="form__label">
+      {{wu-datepicker
+        placeholder=datetimePlaceholder
+        class="date-range__datepicker datepicker"
+        value=(mut date)
+        dateFormat=dateFormat
+      }}
+    </label>
+  </div>
+  <div class="col--2-12">
+    <label class="form__label">
+      {{input class="input-field input-field--block" placeholder="hh"  data-double-input-label-highlight="1"  type="number" value=hours min=0 max=12}}
+    </label>
+  </div>
+  <div class="col--1-12 u-padding--round--tiny">
+    :
+  </div>
+  <div class="col--2-12">
+    <label class="form__label">
+      {{input class="input-field input-field--block" placeholder="mm"  data-double-input-label-highlight="2"  type="number" value=minutes min=0 max=59}}
+    </label>
   </div>
 </div>
 {{yield}}

@@ -9,7 +9,7 @@
             Wil u graag de tabel beheren voor de <strong>fracties</strong>?
           </p>
         {{else}}
-          <p class="u-spacer--tiny"><strong>Gelieve eerst gemeenteraadsleden te benoemen</strong> om een tabel in te voegen voor de fracties</p>
+          <p class="u-spacer--tiny"><strong>Gelieve eerst het agendapunt "Installatie gemeenteraadsleden en eedaflegging" te voltooien</strong> voor u aan de fractievorming start.</p>
         {{/if}}
       {{/if}}
     </div>
@@ -49,13 +49,25 @@
      dialog-content-class="modal-dialog__content--sectioned"
      onClose=(action 'togglePopup')
      as |m|}}
-    {{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "resetTable")}}
-      {{#if tableReset.isRunning}}
-        <p class="loader"><span class="u-visually-hidden">Aan het laden</span></p>
-      {{else}}
-        herlaad tabel
-      {{/if}}
-    {{/wu-link-button}}
+    <div class="u-spacer--bottom--tiny">
+      <div class="grid grid--collapse">
+        {{#if tableReset.isRunning}}
+          <div class="col--12-12">
+            <p class="loader"><span class="u-visually-hidden">Aan het laden</span></p>
+          </div>
+        {{else}}
+          <div class="col--4-12">
+            {{#wu-link-button class="button--small button--link u-spacer--left--tiny" isNarrow=true onClick=(action "resetTable")}}
+              <i class="fa fa-rotate-right"></i>Importeer fracties en gemeenteraadsleden uit vorige agendapunten
+            {{/wu-link-button}}
+          </div>
+{{!--           <div class="col--7-12">
+            <p class="smaller">De informatie in de huidige tabel wordt overschreven door de leden van het punt "Installatie gemeenteraadsleden en eedaflegging".</p>
+          </div> --}}
+        {{/if}}
+      </div>
+    </div>
+
     {{#m.content isSectioned=true}}
       {{editor-plugins/fractievorming-modal
         fracties=fracties

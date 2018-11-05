@@ -1,9 +1,21 @@
-{{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "showMandatarissen")}}
-  beheer mandatarissen
-{{/wu-link-button}}
-{{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "showFracties")}}
-  beheer fracties
-{{/wu-link-button}}
+<div class="grid">
+  <nav class="col--1-1" role="navigation" data-tabs>
+    <ul class="tabs tabs--block u-spacer--none" data-tabs-list>
+      <li class="tab">
+        {{!--             {{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "showMandatarissen")}}
+              Beheer mandatarissen
+            {{/wu-link-button}} --}}
+        <a class="tab__link" href="#" onclick={{action 'showMandatarissen'}}> Beheer mandatarissen</a>
+      </li>
+      <li class="tab tab--active">
+        {{!--             {{#wu-link-button class="button--link button--tiny" isNarrow=true onClick=(action "showFracties")}}
+              beheer fracties
+            {{/wu-link-button}} --}}
+        <a class="tab__link" href="#" onclick={{action 'showFracties'}}> Beheer fracties</a>
+      </li>
+    </ul>
+  </nav>
+</div>
 
 {{#if displayMandatarissen}}
   {{editor-plugins/fractievorming-mandatarissen-table
