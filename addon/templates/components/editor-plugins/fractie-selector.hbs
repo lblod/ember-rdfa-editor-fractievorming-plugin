@@ -1,4 +1,4 @@
-{{#x-select value=_fractieUri action=(action "select") as |xs|}}
+{{#x-select class="select select--block" value=_fractieUri action=(action "select") as |xs|}}
   <option>Selecteer een fractie</option>
   {{#each _fracties as |fractie|}}
     {{#xs.option value=fractie.uri}}
