@@ -30,7 +30,7 @@
                 {{#if model.lidGedurende}}
                   {{#lidmaatschap.linked-resource p="lidGedurende" as |model tijdsinterval|}}
                     <span property={{model.rdfaBindings.begin}} datatype="xsd:dateTime" content={{model.begin}}>
-                      {{moment-format model.begin 'LL, LT'}}
+                      {{moment-format model.begin 'LL'}}
                     </span>
                   {{/lidmaatschap.linked-resource}}
                 {{/if}}
