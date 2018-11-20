@@ -7,6 +7,16 @@ export default Component.extend({
   actions: {
     remove(mandataris){
       this.mandatarissen.removeObject(mandataris);
+    },
+    addMandataris(){
+      this.set('addMandatarisMode', true);
+    },
+    cancelAddMandataris(){
+      this.set('addMandatarisMode', false);
+    },
+    saveAddMandataris(mandataris){
+      this.mandatarissen.pushObject(mandataris);
+      this.set('addMandatarisMode', false);
     }
   }
 });

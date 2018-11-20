@@ -5,10 +5,31 @@
       <th>Mandaten</th>
       <th>Lid vanaf</th>
       <th>Fractie</th>
-      <th>Actie</th>
+      <th>
+        <div class="grid">
+          <div class="col--6-12">
+            Actie
+          </div>
+          <div class="col--6-12 u-align--right">
+            {{#wu-link-button class="button--small" isNarrow=true onClick=(action "addMandataris")}}
+              <i class="vi vi-plus vi-u-s"></i>Voeg mandataris toe
+            {{/wu-link-button}}
+          </div>
+        </div>
+      </th>
     </tr>
   </thead>
   <tbody>
+
+    {{#if addMandatarisMode}}
+      {{editor-plugins/fractievorming-add-new-mandataris
+        onCancel=(action "cancelAddMandataris")
+        onSave=(action "saveAddMandataris")
+        bestuursorgaan=bestuursorgaan
+        bestuurseenheid=bestuurseenheid
+      }}
+    {{/if}}
+
     {{#each mandatarissen as |mandataris|}}
       {{editor-plugins/fractievorming-mandatarissen-table-row
         mandataris=mandataris
