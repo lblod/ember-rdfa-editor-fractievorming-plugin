@@ -89,7 +89,7 @@ export default Component.extend({
      yield this.setProperties();
      yield this.loadDataInitialMode();
   }),
-  
+
   async loadDataEditMode(){
     let triples = this.serializeTableToTriples(this.info.domNodeToUpdate);
     let mandatarissen = await this.instantiateMandatarissen(triples);
