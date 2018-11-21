@@ -23,7 +23,12 @@
 
     {{#if addMandatarisMode}}
       {{#if getUpToDateMandatarissen.isRunning}}
-        <p class="loader"><span class="u-visually-hidden">Aan het laden</span></p>
+        <tr>
+          <td>
+            <p class="loader"><span class="u-visually-hidden">Aan het laden</span></p>
+          </td>
+          <td></td><td></td><td></td><td></td>
+        </tr>
       {{else}}
         {{editor-plugins/fractievorming-add-new-mandataris
           onCancel=(action "cancelAddMandataris")
