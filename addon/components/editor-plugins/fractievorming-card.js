@@ -2,7 +2,7 @@ import { computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
 import layout from '../../templates/components/editor-plugins/fractievorming-card';
-import MandatarisToCreate from '../../models/mandataris-to-create';
+
 import FractieToCreate from '../../models/fractie-to-create';
 import FractietypeToCreate from '../../models/fractietype-to-create';
 import initOnafhankelijkeFractieToCreate from '../../utils/init-onafhankelijke-fractie-to-create';
@@ -12,7 +12,7 @@ import RdfaContextScanner from '@lblod/ember-rdfa-editor/utils/rdfa-context-scan
 import { task } from 'ember-concurrency';
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
-
+import SerializationHelper from '../../mixins/serialization-helper';
 /**
 * Card displaying a hint of the Date plugin
 *
@@ -20,11 +20,8 @@ import { inject as service } from '@ember/service';
 * @class FractievormingCard
 * @extends Ember.Component
 */
-export default Component.extend({
+export default Component.extend(SerializationHelper, {
   layout,
-
-  expandedExt: 'http://mu.semte.ch/vocabularies/ext/',
-  oudMandaatPredicate: 'http://mu.semte.ch/vocabularies/ext/oudMandaat',
   outputId: computed('id', function() {
     return `output-fractie-tabel-${this.elementId}`;
   }),
@@ -200,56 +197,6 @@ export default Component.extend({
     //needs onafhankelijke
     fracties.pushObject(initOnafhankelijkeFractieToCreate(this.bestuurseenheid, [ this.bestuursorgaan ]));
     return fracties;
-  },
-
-  async instantiateMandatarissen(triples){
-    const resources = triples.filter((t) => t.predicate === "a");
-    const mandatarissen = A();
-    for (let resource of resources) {
-      if(!this.isResourceNewMandataris(resource, triples, mandatarissen))
-        continue;
-      mandatarissen.pushObject(await this.buildMandatarisFromTriples(triples.filter((t) => t.subject === resource.subject)));
-    }
-    return mandatarissen;
-  },
-
-  async buildMandatarisFromTriples(triples) {
-    const mandataris = MandatarisToCreate.create({ uri: triples[0].subject});
-    const mandaatURI = triples.find((t) => t.predicate === mandataris.rdfaBindings.bekleedt);
-    if (mandaatURI) {
-      const mandaat = await this.store.query('mandaat', { filter:{':uri:': mandaatURI.object}});
-      mandataris.set('bekleedt', mandaat.get('firstObject'));
-    }
-    const persoonURI = triples.find((t) => t.predicate === mandataris.rdfaBindings.isBestuurlijkeAliasVan);
-    if (persoonURI) {
-      const persoon = await this.store.query('persoon',
-                                             {
-                                               filter: {
-                                                 ':uri:': persoonURI.object,
-                                                 'is-kandidaat-voor': { 'rechtstreekse-verkiezing': {'stelt-samen': {':uri:': this.bestuursorgaan.uri}}}
-                                               },
-                                               include: 'is-kandidaat-voor'
-                                             });
-      mandataris.set('isBestuurlijkeAliasVan', persoon.get('firstObject'));
-    }
-    return mandataris;
-  },
-
-  isResourceNewMandataris(resource, triples, loadedMandatarissen){
-    return resource.object === 'http://data.vlaanderen.be/ns/mandaat#Mandataris' &&
-      ! loadedMandatarissen.some( (m) => m.uri === resource.subject) &&
-      ! triples.some((t) => t.predicate === this.oudMandaatPredicate && t.object === resource.subject);
-  },
-
-  serializeTableToTriples(table){
-    const contextScanner = RdfaContextScanner.create({});
-    const contexts = contextScanner.analyse(table).map((c) => c.context);
-    return Array.concat(...contexts);
-  },
-
-  getMandatarisTableNode(){
-    return  document.querySelectorAll("[property='ext:mandatarisTabelInput']")[0]
-      ||  document.querySelectorAll(`[property='${this.expandedExt}/mandatarisTabelInput']`)[0];
   },
 
   didReceiveAttrs() {
