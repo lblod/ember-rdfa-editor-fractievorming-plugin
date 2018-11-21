@@ -1,9 +1,5 @@
 <td>
-  {{#if loadData.isRunning}}
-    <p class="loader"><span class="u-visually-hidden">Aan het laden</span></p>
-  {{else}}
-   {{editor-plugins/fractievorming-add-new-mandataris-selector onSelect=(action "select") mandatarissen=mandatarissen}}
-  {{/if}}
+  {{editor-plugins/fractievorming-add-new-mandataris-selector onSelect=(action "select") mandatarissen=mandatarissen}}
 </td>
 <td>
 </td>
@@ -17,9 +13,9 @@
       {{#wu-link-button class="button--small" isNarrow=true onClick=(action "save")}}
         <i class="vi vi-check vi-u-xs"></i>Voeg toe
       {{/wu-link-button}}
-      {{#wu-link-button class="button--small button--alt" isNarrow=true onClick=(action "cancel")}}
-        <i class="vi vi-cross vi-u-s"></i>Annuleer
-      {{/wu-link-button}}
     {{/if}}
+    {{#wu-link-button class="button--small button--alt" isNarrow=true onClick=(action "cancel")}}
+      <i class="vi vi-cross vi-u-s"></i>Annuleer
+    {{/wu-link-button}}
   {{/wu-button-group}}
 </td>

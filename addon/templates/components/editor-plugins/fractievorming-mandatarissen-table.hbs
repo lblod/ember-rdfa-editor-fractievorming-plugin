@@ -22,15 +22,20 @@
   <tbody>
 
     {{#if addMandatarisMode}}
-      {{editor-plugins/fractievorming-add-new-mandataris
-        onCancel=(action "cancelAddMandataris")
-        onSave=(action "saveAddMandataris")
-        bestuursorgaan=bestuursorgaan
-        bestuurseenheid=bestuurseenheid
-      }}
+      {{#if getUpToDateMandatarissen.isRunning}}
+        <p class="loader"><span class="u-visually-hidden">Aan het laden</span></p>
+      {{else}}
+        {{editor-plugins/fractievorming-add-new-mandataris
+          onCancel=(action "cancelAddMandataris")
+          onSave=(action "saveAddMandataris")
+          bestuursorgaan=bestuursorgaan
+          bestuurseenheid=bestuurseenheid
+          mandatarissen=upToDateMandatarissen
+        }}
+      {{/if}}
     {{/if}}
 
-    {{#each mandatarissen as |mandataris|}}
+    {{#each sortedMandatarissen as |mandataris|}}
       {{editor-plugins/fractievorming-mandatarissen-table-row
         mandataris=mandataris
         fracties=fracties
