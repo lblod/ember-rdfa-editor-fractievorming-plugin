@@ -41,6 +41,10 @@ export default Component.extend(SerializationHelper, {
       this.set('addMandatarisMode', false);
     },
     saveAddMandataris(mandataris){
+      //remove potential duplicate
+      let toDelete = this.mandatarissen.find(m => m.uri == mandataris.uri);
+      if(toDelete)
+        this.mandatarissen.removeObject(toDelete);
       this.mandatarissen.pushObject(mandataris);
       this.set('addMandatarisMode', false);
     }
