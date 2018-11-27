@@ -2,7 +2,6 @@
   <thead>
     <tr>
       <th>Voornaam &amp; Familienaam</th>
-      <th>Mandaat</th>
       <th>Lid vanaf</th>
       <th>Fractie</th>
     </tr>
@@ -14,13 +13,6 @@
             {{#with-rdfa-resource resource=mandataris as |ctx|}}
               {{#ctx.linked-resource p="isBestuurlijkeAliasVan" as |model persoon|}}
                 {{persoon.prop resource=model p="gebruikteVoornaam"}} {{persoon.prop resource=model p="achternaam"}}
-              {{/ctx.linked-resource}}
-            {{/with-rdfa-resource}}
-          </td>
-          <td>
-            {{#with-rdfa-resource resource=mandataris as |ctx|}}
-              {{#ctx.linked-resource p="bekleedt" as |model mandaat|}}
-                {{model.bestuursfunctie.label}}
               {{/ctx.linked-resource}}
             {{/with-rdfa-resource}}
           </td>
