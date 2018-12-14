@@ -223,7 +223,7 @@ export default Component.extend(SerializationHelper, {
     },
 
     toggleNieuweStijl(){
-      this.toggelProperty('nieuweStijl');
+      this.toggleProperty('nieuweStijl');
     }
   }
 });
