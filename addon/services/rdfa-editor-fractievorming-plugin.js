@@ -51,7 +51,7 @@ const RdfaEditorFractievormingPlugin = Service.extend({
         hints.pushObjects(this.generateHintsForContext(context, triple, domNode, editor));
       }
     }
-    
+
     const cards = hints.map( (hint) => this.generateCard(hrId, hintsRegistry, editor, hint, this.who));
     if(cards.length > 0){
       hintsRegistry.addHints(hrId, this.who, cards);

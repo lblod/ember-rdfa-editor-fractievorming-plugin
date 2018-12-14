@@ -61,13 +61,19 @@
               <i class="fa fa-rotate-right"></i>Importeer fracties en gemeenteraadsleden uit vorige agendapunten
             {{/wu-link-button}}
           </div>
-{{!--           <div class="col--7-12">
-            <p class="smaller">De informatie in de huidige tabel wordt overschreven door de leden van het punt "Installatie gemeenteraadsleden en eedaflegging".</p>
+          <div class="col--7-12">
+            <label class="checkbox checkbox--block">
+              {{input class="checkbox__toggle" type="checkbox" checked=nieuweStijl click=(action "toggleNieuweStijl") }}
+              <span></span>
+              <strong>Voeg toe in nieuwe stijl</strong>
+            </label>
+          </div>
+          {{!--           <div class="col--7-12">
+          <p class="smaller">De informatie in de huidige tabel wordt overschreven door de leden van het punt "Installatie gemeenteraadsleden en eedaflegging".</p>
           </div> --}}
         {{/if}}
       </div>
     </div>
-
     {{#m.content isSectioned=true}}
       {{editor-plugins/fractievorming-modal
         fracties=fracties
@@ -75,7 +81,7 @@
         bestuursorgaan=bestuursorgaan
         bestuurseenheid=bestuurseenheid
       }}
-      {{editor-plugins/fractievorming-output-table-rdfa id=outputId class="u-hidden" mandatarissen=mandatarissen}}
+      {{editor-plugins/fractievorming-output-table-rdfa id=outputId class="u-hidden" mandatarissen=mandatarissen nieuweStijl=nieuweStijl}}
     {{/m.content}}
     <div class="modal-dialog__footer">
       {{#wu-button-group}}

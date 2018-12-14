@@ -220,6 +220,10 @@ export default Component.extend(SerializationHelper, {
     },
     togglePopup(){
        this.toggleProperty('popup');
+    },
+
+    toggleNieuweStijl(){
+      this.toggelProperty('nieuweStijl');
     }
   }
 });
