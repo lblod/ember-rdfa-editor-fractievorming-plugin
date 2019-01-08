@@ -12,6 +12,9 @@ export default Component.extend({
   },
 
   sortFractie: (a, b) => {
+    if(!a.get('heeftLidmaatschap.binnenFractie.naam') || !b.get('heeftLidmaatschap.binnenFractie.naam')){
+      return 0;
+    }
     return a.heeftLidmaatschap.binnenFractie.naam.trim().localeCompare(b.heeftLidmaatschap.binnenFractie.naam.trim());
   }
 });
